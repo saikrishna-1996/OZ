@@ -1,1 +1,1 @@
-# OZ
+self-play algorithms for Othello
