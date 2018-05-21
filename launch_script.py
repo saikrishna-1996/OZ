@@ -23,7 +23,7 @@ parser.add_argument('--data-path', type=str, default='./data', help='Path to dat
 parser.add_argument('--workers', type=int, help='Number of workers used for generating games', default=Config.default_workers)
 parser.add_argument('--seed', type=int, default=1, help='random seed (default: 1)')
 parser.add_argument('--no-cuda', action='store_true', default=True, help='Disables GPU use')
-parser.add_argument('--pretrain', action='store_true', default=True, help='Pretrain value function')
+parser.add_argument('--pretrain', action='store_true', default=False, help='Pretrain value function')
 
 args = parser.parse_args()
 args.cuda = True if not args.no_cuda and torch.cuda.is_available() else False
