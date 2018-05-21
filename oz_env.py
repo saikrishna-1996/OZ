@@ -202,7 +202,8 @@ class oz_env:
     def is_legal_E(self, move):
     	player = self.board[71]
     	anti_player = -player
-    	move_in_int = square_to_int(move)
+    	#move_in_int = square_to_int(move)
+    	move_in_int = move
     	if self.board(move_in_int) != 0:
     		return 0
     	else:
@@ -222,7 +223,8 @@ class oz_env:
     def is_legal_W(self, move):
     	player = self.board[71]
     	anti_player = -player
-    	move_in_int = square_to_int(move)
+    	#move_in_int = square_to_int(move)
+    	move_in_int = move
     	if self.board(move_in_int) != 0:
     		return 0
     	else:
@@ -242,7 +244,8 @@ class oz_env:
     def is_legal_N(self, move):
     	player = self.board[71]
     	anti_player = -player
-    	move_in_int = square_to_int(move)
+    	#move_in_int = square_to_int(move)
+    	move_in_int = move
     	if self.board(move_in_int) != 0:
     		return 0
     	else:
@@ -262,7 +265,8 @@ class oz_env:
     def is_legal_S(self, move):
     	player = self.board[71]
     	anti_player = -player
-    	move_in_int = square_to_int(move)
+    	#move_in_int = square_to_int(move)
+    	move_in_int = move
     	if self.board(move_in_int) != 0:
     		return 0
     	else:
@@ -282,7 +286,8 @@ class oz_env:
     def is_legal_NE(self, move):
     	player = self.board[71]
     	anti_player = -player
-    	move_in_int = square_to_int(move)
+    	#move_in_int = square_to_int(move)
+    	move_in_int = move
     	if self.board(move_in_int) != 0:
     		return 0
     	else:
@@ -304,7 +309,8 @@ class oz_env:
     def is_legal_SW(self, move):
     	player = self.board[71]
     	anti_player = -player
-    	move_in_int = square_to_int(move)
+    	#move_in_int = square_to_int(move)
+    	move_in_int = move
     	if self.board(move_in_int) != 0:
     		return 0
     	else:
@@ -326,7 +332,8 @@ class oz_env:
     def is_legal_NW(self, move):
     	player = self.board[71]
     	anti_player = -player
-    	move_in_int = square_to_int(move)
+    	#move_in_int = square_to_int(move)
+    	move_in_int = move
     	if self.board(move_in_int) != 0:
     		return 0
     	else:
@@ -347,7 +354,8 @@ class oz_env:
     def is_legal_SE(self, move):
     	player = self.board[71]
     	anti_player = -player
-    	move_in_int = square_to_int(move)
+    	#move_in_int = square_to_int(move)
+    	move_in_int = move
     	if self.board(move_in_int) != 0:
     		return 0
     	else:
@@ -364,3 +372,15 @@ class oz_env:
     						return 1
     					move_in_int = move_in_int - 7
     				return 0
+
+    def is_legal(self, move):
+    	if is_legal_SE(self,move) == 1 or is_legal_NW(self, move) == 1 or is_legal_SW(self, move) == 1 or is_legal_NE(self, move) == 1 or is_legal_S(self, move) == 1 or is_legal_N(self, move) == 1 or is_legal_W(self, move) == 1 or is_legal_E(self, move) == 1:
+    		return 1
+    	else:
+    		return 0
+
+    def legal_mask(self):
+    	the_mask = [0]*64
+    	for i in range(8):
+    		for j in range(8):
+    			the_mask[i,j] = is_legal(self, move)
