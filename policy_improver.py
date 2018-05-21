@@ -1,12 +1,8 @@
 import copy
 import time
 
-from train.self_challenge import Champion
-from train.train import train_model
-
-'''
-Given an old policy and some games generated through self-play, the Policy Improver improves the old policy using the generated games, by first training on the games provided by GameGenerator, retraining (or "fine-tuning") the old new policy, then finally evaluating the best player in a tournament-style championship.
-'''
+from self_challenge import Champion
+from train import train_model
 
 class PolicyImprover(object):
     def __init__(self, champion: Champion, championship_rounds):
