@@ -343,7 +343,7 @@ class oz_env:
     			if self.board[move_in_int] != anti_player:
     				return 0
     			else:
-    				while move_in_int < 64:
+    				while move_in_int < 56:
     					move_in_int = move_in_int + 8
     					if self.board[move_in_int] == player:
     						return 1
