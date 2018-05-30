@@ -130,7 +130,7 @@ def square_to_int(square):
     elif square == 'H1':
         return 63
 
-class oz_env:
+class oz_env():
 
     def __init__(self, board=None):
         self.board = board
@@ -138,18 +138,18 @@ class oz_env:
         self.result = None
 
 
-	def reset(self):
-    	self.board = [[0,0,0,0,0,0,0,0],
-    					[0,0,0,0,0,0,0,0],
-    					[0,0,0,0,0,0,0,0],
-    					[0,0,0,-1,1,0,0,0],
-    					[0,0,0,1,-1,0,0,0],
-    					[0,0,0,0,0,0,0,0],
-    					[0,0,0,0,0,0,0,0],
-    					[0,0,0,0,0,0,0,0]
-    					[0,0,0,0,0,0,0,-1]] #turn is encoded in the last element
+    def reset(self):
+        self.board = [[0,0,0,0,0,0,0,0],
+    			[0,0,0,0,0,0,0,0],
+    			[0,0,0,0,0,0,0,0],
+    			[0,0,0,-1,1,0,0,0],
+    			[0,0,0,1,-1,0,0,0],
+    			[0,0,0,0,0,0,0,0],
+    			[0,0,0,0,0,0,0,0],
+    			[0,0,0,0,0,0,0,0]
+    			[0,0,0,0,0,0,0,-1]] #turn is encoded in the last element
     	self.winner = None
-    	self.resigned = False
+        self.resigned = False
 
     	return self
 
@@ -161,13 +161,13 @@ class oz_env:
     def white_to_move(self):
     	return self.board[71] == 1
 
-    def step(self, action: str):
+    def step(self, action):
 
     	player = self.board[71]
 
     	## invert the pieces, if applicable
-    	
-    	if is_legal_E(self, action) == 1:
+
+        if is_legal_E(self, action) == 1:
     		move_in_int = square_to_int(action)
     		while (move_in_int+1) % 8 != 0:
     			move_in_int = move_in_int + 1
@@ -256,7 +256,7 @@ class oz_env:
     		self.board[square_to_int(action)] = -1
 
 
-    #def _game_over(self):	
+    #def _game_over(self):
 
     def is_game_over(self):
     	count = 0

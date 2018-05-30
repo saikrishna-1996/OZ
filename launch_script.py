@@ -6,10 +6,10 @@ import multiprocessing as mp
 import torch
 
 from config import Config
-from train.game_generator import GameGenerator
-from train.policy_improver import PolicyImprover
-from train.self_challenge import Champion
-from train.train import save_trained, load_model
+from game_generator import GameGenerator
+from policy_improver import PolicyImprover
+from self_challenge import Champion
+from train import save_trained, load_model
 
 parser = argparse.ArgumentParser(description='Launcher for distributed Chess trainer')
 

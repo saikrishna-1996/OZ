@@ -9,7 +9,7 @@ import torch
 # load_gamefile will return a list of lists containing [state, policy, value] as created in MCTS.
 from config import Config
 # from logger import Logger
-from network.policy_network import PolicyValNetwork_Giraffe
+from networks import Polvalnet_fc
 
 
 # Set the logger

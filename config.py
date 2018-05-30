@@ -1,32 +1,32 @@
 import os
 import platform
 
-def make_move_maps():
-    MOVETOINDEX = {}
-    INDEXTOMOVE = []
-    k = 0
-    for i in range(0, 64):
-        for j in range(0, 64):
-            move = chess.Move(i, j).uci()
+#def make_move_maps():
+#    MOVETOINDEX = {}
+#    INDEXTOMOVE = []
+#    k = 0
+#    for i in range(0, 64):
+#        for j in range(0, 64):
+#            move = chess.Move(i, j).uci()
 
-            if move[3] == '8' and move[1] == '7':
-                for letter in 'QRBNqrbn':
-                    new_move = move + letter
-                    MOVETOINDEX[new_move] = k
-                    INDEXTOMOVE.append(new_move)
-                    k += 1
-            elif move[3] == '1' and move[1] == '2':
-                for letter in 'qrbnQRBN':
-                    new_move = move + letter
-                    MOVETOINDEX[new_move] = k
-                    INDEXTOMOVE.append(new_move)
-                    k += 1
-            MOVETOINDEX[move] = k
-            INDEXTOMOVE.append(move)
-            k += 1
-    INDEXTOMOVE[0] = 'a1a1'
+#            if move[3] == '8' and move[1] == '7':
+#                for letter in 'QRBNqrbn':
+#                    new_move = move + letter
+#                    MOVETOINDEX[new_move] = k
+#                    INDEXTOMOVE.append(new_move)
+#                    k += 1
+#            elif move[3] == '1' and move[1] == '2':
+#                for letter in 'qrbnQRBN':
+#                    new_move = move + letter
+#                    MOVETOINDEX[new_move] = k
+#                    INDEXTOMOVE.append(new_move)
+#                    k += 1
+#            MOVETOINDEX[move] = k
+#            INDEXTOMOVE.append(move)
+#            k += 1
+#    INDEXTOMOVE[0] = 'a1a1'
 
-    return MOVETOINDEX, INDEXTOMOVE
+#    return MOVETOINDEX, INDEXTOMOVE
 
 
 def make_square_map():
@@ -58,7 +58,7 @@ class Config(object):
                  'h7': 15,
                  'a8': 0, 'b8': 1, 'c8': 2, 'd8': 3, 'e8': 4, 'f8': 5, 'g8': 6, 'h8': 7}
 
-    MOVETOINDEX, INDEXTOMOVE = make_move_maps()
+    #MOVETOINDEX, INDEXTOMOVE = make_move_maps()
 
     NUM_SIMULATIONS = 10
     BATCH_SIZE = default_workers
