@@ -1,4 +1,4 @@
-import numpy as np
+#import numpy as np
 
 def square_to_int(square):
     if square == 'A8':
@@ -140,336 +140,327 @@ class oz_env():
 
     def reset(self):
         self.board = [[0,0,0,0,0,0,0,0],
-    			[0,0,0,0,0,0,0,0],
-    			[0,0,0,0,0,0,0,0],
-    			[0,0,0,-1,1,0,0,0],
-    			[0,0,0,1,-1,0,0,0],
-    			[0,0,0,0,0,0,0,0],
-    			[0,0,0,0,0,0,0,0],
-    			[0,0,0,0,0,0,0,0]
-    			[0,0,0,0,0,0,0,-1]] #turn is encoded in the last element
-    	self.winner = None
+                [0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0],
+                [0,0,0,-1,1,0,0,0],
+                [0,0,0,1,-1,0,0,0],
+                [0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0]
+                [0,0,0,0,0,0,0,-1]] #turn is encoded in the last element
+        self.winner = None
         self.resigned = False
 
-    	return self
+        return self
 
     @property
     def done(self):
-    	return self.winner is not None
+        return self.winner is not None
 
     @property
     def white_to_move(self):
-    	return self.board[71] == 1
-
-
-
-    #def _game_over(self):
+        return self.board[71] == 1
 
     def is_game_over(self):
-    	count = 0
-    	for i in range(8):
-    		for j in range(8):
-    			if self.board[i, j] == 0:
-    				return 0
-    	return 1
+        for i in range(8):
+            for j in range(8):
+                if self.board[i, j] == 0:
+                    return 0
+        return 1
 
     def who_won(self):
-    	white_count = 0
-    	black_count = 0
-    	no_count = 0
-    	for i in range(8):
-    		for j in range(8):
-    			if self.board[i,j] == 1:
-    				white_count = white_count + 1
-    			elif self.board[i,j] == -1:
-    				black_count = black_count + 1
-    			else:
-    				no_count = no_count + 1
-    	if white_count > black_count:
-    		return 1
-    	elif white_count == black_count:
-    		return 0
-    	else:
-    		return -1
+        white_count = 0
+        black_count = 0
+        no_count = 0
+        for i in range(8):
+            for j in range(8):
+                if self.board[i,j] == 1:
+                    white_count = white_count + 1
+                elif self.board[i,j] == -1:
+                    black_count = black_count + 1
+                else:
+                    no_count = no_count + 1
+        if white_count > black_count:
+            return 1
+        elif white_count == black_count:
+            return 0
+        else:
+            return -1
 
 
     def is_legal_E(self, move):
-    	player = self.board[71]
-    	anti_player = -player
-    	#move_in_int = square_to_int(move)
-    	move_in_int = move
-    	if self.board(move_in_int) != 0:
-    		return 0
-    	else:
-    		if (move_in_int+1) % 8 == 0:
-    			return 0
-    		else:
-    			if self.board[move_in_int+1] != anti_player:
-    				return 0
-    			else:
-    				move_in_int = move_in_int + 1
-    				while (move_in_int+1)%8 != 0:
-    					move_in_int = move_in_int + 1
-    					if self.board[move_in_int] == player:
-    						return 1
-    				return 0
+        player = self.board[71]
+        anti_player = -player
+        #move_in_int = square_to_int(move)
+        move_in_int = move
+        if self.board(move_in_int) != 0:
+            return 0
+        else:
+            if (move_in_int+1) % 8 == 0:
+                return 0
+            else:
+                if self.board[move_in_int+1] != anti_player:
+                    return 0
+                else:
+                    move_in_int = move_in_int + 1
+                    while (move_in_int+1)%8 != 0:
+                        move_in_int = move_in_int + 1
+                        if self.board[move_in_int] == player:
+                            return 1
+                    return 0
 
     def is_legal_W(self, move):
-    	player = self.board[71]
-    	anti_player = -player
-    	#move_in_int = square_to_int(move)
-    	move_in_int = move
-    	if self.board(move_in_int) != 0:
-    		return 0
-    	else:
-    		if (move_in_int % 8) == 0:
-    			return 0
-    		else:
-    			if self.board[move_in_int - 1] != anti_player:
-    				return 0
-    			else:
-    				move_in_int = move_in_int - 1
-    				while (move_in_int % 8) != 0:
-    					move_in_int = move_in_int - 1
-    					if self.board[move_in_int] == player:
-    						return 1
-    				return 0
+        player = self.board[71]
+        anti_player = -player
+        #move_in_int = square_to_int(move)
+        move_in_int = move
+        if self.board(move_in_int) != 0:
+            return 0
+        else:
+            if (move_in_int % 8) == 0:
+                return 0
+            else:
+                if self.board[move_in_int - 1] != anti_player:
+                    return 0
+                else:
+                    move_in_int = move_in_int - 1
+                    while (move_in_int % 8) != 0:
+                        move_in_int = move_in_int - 1
+                        if self.board[move_in_int] == player:
+                            return 1
+                    return 0
 
     def is_legal_N(self, move):
-    	player = self.board[71]
-    	anti_player = -player
-    	#move_in_int = square_to_int(move)
-    	move_in_int = move
-    	if self.board(move_in_int) != 0:
-    		return 0
-    	else:
-    		if move_in_int > 55:
-    			return 0
-    		else:
-    			move_in_int = move_in_int + 8
-    			if self.board[move_in_int] != anti_player:
-    				return 0
-    			else:
-    				while move_in_int < 56:
-    					move_in_int = move_in_int + 8
-    					if self.board[move_in_int] == player:
-    						return 1
-    				return 0
+        player = self.board[71]
+        anti_player = -player
+        #move_in_int = square_to_int(move)
+        move_in_int = move
+        if self.board(move_in_int) != 0:
+            return 0
+        else:
+            if move_in_int > 55:
+                return 0
+            else:
+                move_in_int = move_in_int + 8
+                if self.board[move_in_int] != anti_player:
+                    return 0
+                else:
+                    while move_in_int < 56:
+                        move_in_int = move_in_int + 8
+                        if self.board[move_in_int] == player:
+                            return 1
+                    return 0
 
     def is_legal_S(self, move):
-    	player = self.board[71]
-    	anti_player = -player
-    	#move_in_int = square_to_int(move)
-    	move_in_int = move
-    	if self.board(move_in_int) != 0:
-    		return 0
-    	else:
-    		if move_in_int <= 7:
-    			return 0
-    		else:
-    			move_in_int = move_in_int - 8
-    			if self.board[move_in_int] != anti_player:
-    				return 0
-    			else:
-    				while move_in_int > 7:
-    					move_in_int = move_in_int - 8
-    					if self.board[move_in_int] == player:
-    						return 1
-    				return 0
+        player = self.board[71]
+        anti_player = -player
+        #move_in_int = square_to_int(move)
+        move_in_int = move
+        if self.board(move_in_int) != 0:
+            return 0
+        else:
+            if move_in_int <= 7:
+                return 0
+            else:
+                move_in_int = move_in_int - 8
+                if self.board[move_in_int] != anti_player:
+                    return 0
+                else:
+                    while move_in_int > 7:
+                        move_in_int = move_in_int - 8
+                        if self.board[move_in_int] == player:
+                            return 1
+                    return 0
 
     def is_legal_NE(self, move):
-    	player = self.board[71]
-    	anti_player = -player
-    	#move_in_int = square_to_int(move)
-    	move_in_int = move
-    	if self.board(move_in_int) != 0:
-    		return 0
-    	else:
-    		if move_in_int > 45:
-    			return 0
-    		else:
-    			move_in_int = move_in_int + 9
-    			if self.board[move_in_int] != anti_player:
-    				return 0
-    			else:
-    				move_in_int = move_in_int + 9
-    				while move_in_int < 64:
-    					if self.board[move_in_int] == player:
-    						return 1
-    					move_in_int = move_in_int + 9
-    				return 0
+        player = self.board[71]
+        anti_player = -player
+        #move_in_int = square_to_int(move)
+        move_in_int = move
+        if self.board(move_in_int) != 0:
+            return 0
+        else:
+            if move_in_int > 45:
+                return 0
+            else:
+                move_in_int = move_in_int + 9
+                if self.board[move_in_int] != anti_player:
+                    return 0
+                else:
+                    move_in_int = move_in_int + 9
+                    while move_in_int < 64:
+                        if self.board[move_in_int] == player:
+                            return 1
+                        move_in_int = move_in_int + 9
+                    return 0
 
 
     def is_legal_SW(self, move):
-    	player = self.board[71]
-    	anti_player = -player
-    	#move_in_int = square_to_int(move)
-    	move_in_int = move
-    	if self.board(move_in_int) != 0:
-    		return 0
-    	else:
-    		if move_in_int < 18:
-    			return 0
-    		else:
-    			move_in_int = move_in_int - 9
-    			if self.board[move_in_int] != anti_player:
-    				return 0
-    			else:
-    				move_in_int = move_in_int - 9
-    				while move_in_int > 0:
-    					if self.board[move_in_int] == player:
-    						return 1
-    					move_in_int = move_in_int - 9
-    				return 0
+        player = self.board[71]
+        anti_player = -player
+        #move_in_int = square_to_int(move)
+        move_in_int = move
+        if self.board(move_in_int) != 0:
+            return 0
+        else:
+            if move_in_int < 18:
+                return 0
+            else:
+                move_in_int = move_in_int - 9
+                if self.board[move_in_int] != anti_player:
+                    return 0
+                else:
+                    move_in_int = move_in_int - 9
+                    while move_in_int > 0:
+                        if self.board[move_in_int] == player:
+                            return 1
+                        move_in_int = move_in_int - 9
+                    return 0
 
 
     def is_legal_NW(self, move):
-    	player = self.board[71]
-    	anti_player = -player
-    	#move_in_int = square_to_int(move)
-    	move_in_int = move
-    	if self.board(move_in_int) != 0:
-    		return 0
-    	else:
-    		if move_in_int >= 55:
-    			return 0
-    		else:
-    			move_in_int = move_in_int + 7
-    			if self.board[move_in_int] != anti_player:
-    				return 0
-    			else:
-    				move_in_int = move_in_int + 7
-    				while move_in_int < 64:
-    					if self.board[move_in_int] == player:
-    						return 1
-    					move_in_int = move_in_int + 7
-    				return 0
+        player = self.board[71]
+        anti_player = -player
+        #move_in_int = square_to_int(move)
+        move_in_int = move
+        if self.board(move_in_int) != 0:
+            return 0
+        else:
+            if move_in_int >= 55:
+                return 0
+            else:
+                move_in_int = move_in_int + 7
+                if self.board[move_in_int] != anti_player:
+                    return 0
+                else:
+                    move_in_int = move_in_int + 7
+                    while move_in_int < 64:
+                        if self.board[move_in_int] == player:
+                            return 1
+                        move_in_int = move_in_int + 7
+                    return 0
 
     def is_legal_SE(self, move):
-    	player = self.board[71]
-    	anti_player = -player
-    	#move_in_int = square_to_int(move)
-    	move_in_int = move
-    	if self.board(move_in_int) != 0:
-    		return 0
-    	else:
-    		if move_in_int < 15:
-    			return 0
-    		else:
-    			move_in_int = move_in_int - 7
-    			if self.board[move_in_int] != anti_player:
-    				return 0
-    			else:
-    				move_in_int = move_in_int - 7
-    				while move_in_int >= 0:
-    					if self.board[move_in_int] == player:
-    						return 1
-    					move_in_int = move_in_int - 7
-    				return 0
+        player = self.board[71]
+        anti_player = -player
+        #move_in_int = square_to_int(move)
+        move_in_int = move
+        if self.board(move_in_int) != 0:
+            return 0
+        else:
+            if move_in_int < 15:
+                return 0
+            else:
+                move_in_int = move_in_int - 7
+                if self.board[move_in_int] != anti_player:
+                    return 0
+                else:
+                    move_in_int = move_in_int - 7
+                    while move_in_int >= 0:
+                        if self.board[move_in_int] == player:
+                            return 1
+                        move_in_int = move_in_int - 7
+                    return 0
 
     def is_legal(self, move):
-    	if is_legal_SE(self,move) == 1 or is_legal_NW(self, move) == 1 or is_legal_SW(self, move) == 1 or is_legal_NE(self, move) == 1 or is_legal_S(self, move) == 1 or is_legal_N(self, move) == 1 or is_legal_W(self, move) == 1 or is_legal_E(self, move) == 1:
-    		return 1
-    	else:
-    		return 0
+        if self.is_legal_SE(self,move) == 1 or self.is_legal_NW(self, move) == 1 or self.is_legal_SW(self, move) == 1 or self.is_legal_NE(self, move) == 1 or self.is_legal_S(self, move) == 1 or self.is_legal_N(self, move) == 1 or self.is_legal_W(self, move) == 1 or self.is_legal_E(self, move) == 1:
+            return 1
+        else:
+            return 0
 
     def legal_mask(self):
-    	the_mask = [0]*64
-    	for i in range(8):
-    		for j in range(8):
-    			the_mask[i,j] = is_legal(self, move)
+        the_mask = [0]*64
+        for i in range(8):
+            for j in range(8):
+                move = i*8 + j
+                the_mask[i,j] = self.is_legal(self, move)
 
     def step(self, action):
 
-    	player = self.board[71]
+        player = self.board[71]
 
-    	## invert the pieces, if applicable
+        ## invert the pieces, if applicable
 
-        if is_legal_E(self, action) == 1:
-    		move_in_int = square_to_int(action)
-    		while (move_in_int+1) % 8 != 0:
-    			move_in_int = move_in_int + 1
-    			if self.board[move_in_int] == player:
-    				break
-    			else:
-    				self.board[move_in_int] = player
+        if self.is_legal_E(self, action) == 1:
+            move_in_int = square_to_int(action)
+            while (move_in_int+1) % 8 != 0:
+                move_in_int = move_in_int + 1
+                if self.board[move_in_int] == player:
+                    break
+                else:
+                    self.board[move_in_int] = player
 
-    	if is_legal_W(self, action) == 1:
-    		move_in_int = square_to_int(action)
-    		while (move_in_int % 8) != 0:
-    			move_in_int = move_in_int - 1
-    			if self.board[move_in_int] == player:
-    				break
-    			else:
-    				self.board[move_in_int] = player
+        if self.is_legal_W(self, action) == 1:
+            move_in_int = square_to_int(action)
+            while (move_in_int % 8) != 0:
+                move_in_int = move_in_int - 1
+                if self.board[move_in_int] == player:
+                    break
+                else:
+                    self.board[move_in_int] = player
 
-    	if is_legal_S(self, action) == 1:
-    		move_in_int = square_to_int(action)
-    		while move_in_int > 7:
-    			move_in_int = move_in_int - 8
-    			if self.board[move_in_int] == player:
-    				break
-    			else:
-    				self.board[move_in_int] = player
+        if self.is_legal_S(self, action) == 1:
+            move_in_int = square_to_int(action)
+            while move_in_int > 7:
+                move_in_int = move_in_int - 8
+                if self.board[move_in_int] == player:
+                    break
+                else:
+                    self.board[move_in_int] = player
 
-    	if is_legal_N(self, action) == 1:
-    		move_in_int = square_to_int(action)
-    		while move_in_int < 56:
-    			move_in_int = move_in_int + 8
-    			if self.board[move_in_int] == player:
-    				break
-    			else:
-    				self.board[move_in_int] = player
+        if self.is_legal_N(self, action) == 1:
+            move_in_int = square_to_int(action)
+            while move_in_int < 56:
+                move_in_int = move_in_int + 8
+                if self.board[move_in_int] == player:
+                    break
+                else:
+                    self.board[move_in_int] = player
 
-    	if is_legal_NE(self, action) == 1:
-    		move_in_int = square_to_int(action)
-    		move_in_int = move_in_int + 9
-    		while move_in_int < 64:
-    			if self.board[move_in_int] == player:
-    				break
-    			else:
-    				self.board[move_in_int] = player
-    			move_in_int = move_in_int + 9
+        if self.is_legal_NE(self, action) == 1:
+            move_in_int = square_to_int(action)
+            move_in_int = move_in_int + 9
+            while move_in_int < 64:
+                if self.board[move_in_int] == player:
+                    break
+                else:
+                    self.board[move_in_int] = player
+                move_in_int = move_in_int + 9
 
-    	if is_legal_SW(self, action) == 1:
-    		move_in_int = square_to_int(action)
-    		move_in_int = move_in_int - 9
-    		while move_in_int > 0:
-    			if self.board[move_in_int] == player:
-    				break
-    			else:
-    				self.board[move_in_int] = player
-    			move_in_int = move_in_int - 9
+        if self.is_legal_SW(self, action) == 1:
+            move_in_int = square_to_int(action)
+            move_in_int = move_in_int - 9
+            while move_in_int > 0:
+                if self.board[move_in_int] == player:
+                    break
+                else:
+                    self.board[move_in_int] = player
+                move_in_int = move_in_int - 9
 
-    	if is_legal_NW(self, action) == 1:
-    		move_in_int = square_to_int(action)
-    		move_in_int = move_in_int + 7
-    		while move_in_int < 64:
-    			if self.board[move_in_int] == player:
-    				break
-    			else:
-    				self.board[move_in_int] = player
-    			move_in_int = move_in_int + 7
+        if self.is_legal_NW(self, action) == 1:
+            move_in_int = square_to_int(action)
+            move_in_int = move_in_int + 7
+            while move_in_int < 64:
+                if self.board[move_in_int] == player:
+                    break
+                else:
+                    self.board[move_in_int] = player
+                move_in_int = move_in_int + 7
 
-    	if is_legal_SE(self, action) == 1:
-    		move_in_int = square_to_int(action)
-    		move_in_int = move_in_int - 7
-    		while move_in_int >= 0:
-    			if self.board[move_in_int] == player:
-    				break
-    			else:
-    				self.board[move_in_int] = player
-    			move_in_int = move_in_int - 7
+        if self.is_legal_SE(self, action) == 1:
+            move_in_int = square_to_int(action)
+            move_in_int = move_in_int - 7
+            while move_in_int >= 0:
+                if self.board[move_in_int] == player:
+                    break
+                else:
+                    self.board[move_in_int] = player
+                move_in_int = move_in_int - 7
 
-
-
-
-
-
-    	if self.board[71] == 1:
-    		self.board[71] = -1
-    		self.board[square_to_int(action)] = 1
-    	else:
-    		self.board[71] = 1
-    		self.board[square_to_int(action)] = -1
+        if self.board[71] == 1:
+            self.board[71] = -1
+            self.board[square_to_int(action)] = 1
+        else:
+            self.board[71] = 1
+            self.board[square_to_int(action)] = -1
 
