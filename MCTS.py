@@ -8,7 +8,7 @@ from networks import Polvalnet_fc
 
 
 class Node(object):
-    def __init__(self, env: ChessEnv, explore_factor,
+    def __init__(self, env: oz_env, explore_factor,
                  init_W=np.zeros((Config.d_out,)),
                  init_N=np.zeros((Config.d_out,)),
                  init_P=np.ones((Config.d_out,)) * (1 / Config.d_out),
@@ -110,7 +110,7 @@ def legal_mask(board, all_move_probs) -> np.array:
 
 
 def MCTS(temp: float,
-         network: PolicyValNetwork_Giraffe,
+         network: Polvalnet_fc,
          root,
          dirichlet_alpha=Config.D_ALPHA,
          batch_size: int = Config.BATCH_SIZE) -> tuple:

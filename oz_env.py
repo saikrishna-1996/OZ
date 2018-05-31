@@ -146,7 +146,7 @@ class oz_env():
                 [0,0,0,1,-1,0,0,0],
                 [0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0]
+                [0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,-1]] #turn is encoded in the last element
         self.winner = None
         self.resigned = False

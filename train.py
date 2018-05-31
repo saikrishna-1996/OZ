@@ -119,7 +119,7 @@ def save_trained(model, iteration):
 
 
 def load_model(fname=None):
-    model = Polvalnet_fc(pretrain=False)
+    model = Polvalnet_fc()
     if fname is None:
         list_of_files = glob.glob('./*.pt')
         if len(list_of_files) != 0:
