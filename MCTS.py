@@ -141,7 +141,8 @@ def MCTS(temp: float,
 
     # optimum policy
     pi = np.divide(np.power(N, temp), norm_factor)
-    print(pi)
+    #print(pi)
+    ## need to add here is pi is empty
     action_index = np.argmax(pi)
 
     new_pi = np.zeros(Config.d_out, )

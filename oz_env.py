@@ -136,6 +136,7 @@ class oz_env():
         self.board = board
         self.winner = None
         self.result = None
+        #self.num_pass = 0
 
 
     def reset(self):
@@ -151,6 +152,7 @@ class oz_env():
         self.board = [0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0,  0,0,0,-1,1,0,0,0,  0,0,0,1,-1,0,0,0,  0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,-1]
         self.winner = None
         self.resigned = False
+        #self.num_pass = 0
 
         return self
 
@@ -165,6 +167,9 @@ class oz_env():
     def is_game_over(self):
         #for i in range(8):
         #    for j in range(8):
+        if self.board[70] >= 2:
+            return 1
+
         for i in range(64):
             if self.board[i] == 0:
                 return 0
@@ -395,91 +400,95 @@ class oz_env():
 
         player = self.board[71]
 
-        ## invert the pieces, if applicable
+        if action == 64:
+            self.board[70] = self.board[70] + 1
 
-        if self.is_legal_E(action) == 1:
-            #move_in_int = square_to_int(action)
-            move_in_int = action
-            while (move_in_int+1) % 8 != 0:
-                move_in_int = move_in_int + 1
-                if self.board[move_in_int] == player:
-                    break
-                else:
-                    self.board[move_in_int] = player
+        else:
+       ## invert the pieces, if applicable
 
-        if self.is_legal_W(action) == 1:
+            if self.is_legal_E(action) == 1:
             #move_in_int = square_to_int(action)
-            move_in_int = action
-            while (move_in_int % 8) != 0:
-                move_in_int = move_in_int - 1
-                if self.board[move_in_int] == player:
-                    break
-                else:
-                    self.board[move_in_int] = player
+                move_in_int = action
+                while (move_in_int+1) % 8 != 0:
+                    move_in_int = move_in_int + 1
+                    if self.board[move_in_int] == player:
+                        break
+                    else:
+                        self.board[move_in_int] = player
 
-        if self.is_legal_S(action) == 1:
-            #move_in_int = square_to_int(action)
-            move_in_int = action
-            while move_in_int > 7:
-                move_in_int = move_in_int - 8
-                if self.board[move_in_int] == player:
-                    break
-                else:
-                    self.board[move_in_int] = player
+            if self.is_legal_W(action) == 1:
+                #move_in_int = square_to_int(action)
+                move_in_int = action
+                while (move_in_int % 8) != 0:
+                    move_in_int = move_in_int - 1
+                    if self.board[move_in_int] == player:
+                        break
+                    else:
+                        self.board[move_in_int] = player
 
-        if self.is_legal_N(action) == 1:
-            #move_in_int = square_to_int(action)
-            move_in_int = action
-            while move_in_int < 56:
-                move_in_int = move_in_int + 8
-                if self.board[move_in_int] == player:
-                    break
-                else:
-                    self.board[move_in_int] = player
+            if self.is_legal_S(action) == 1:
+                #move_in_int = square_to_int(action)
+                move_in_int = action
+                while move_in_int > 7:
+                    move_in_int = move_in_int - 8
+                    if self.board[move_in_int] == player:
+                        break
+                    else:
+                        self.board[move_in_int] = player
 
-        if self.is_legal_NE(action) == 1:
-            #move_in_int = square_to_int(action)
-            move_in_int = action
-            move_in_int = move_in_int + 9
-            while move_in_int < 64:
-                if self.board[move_in_int] == player:
-                    break
-                else:
-                    self.board[move_in_int] = player
+            if self.is_legal_N(action) == 1:
+                #move_in_int = square_to_int(action)
+                move_in_int = action
+                while move_in_int < 56:
+                    move_in_int = move_in_int + 8
+                    if self.board[move_in_int] == player:
+                        break
+                    else:
+                        self.board[move_in_int] = player
+
+            if self.is_legal_NE(action) == 1:
+                #move_in_int = square_to_int(action)
+                move_in_int = action
                 move_in_int = move_in_int + 9
+                while move_in_int < 64:
+                    if self.board[move_in_int] == player:
+                        break
+                    else:
+                        self.board[move_in_int] = player
+                    move_in_int = move_in_int + 9
 
-        if self.is_legal_SW(action) == 1:
-            #move_in_int = square_to_int(action)
-            move_in_int = action
-            move_in_int = move_in_int - 9
-            while move_in_int > 0:
-                if self.board[move_in_int] == player:
-                    break
-                else:
-                    self.board[move_in_int] = player
+            if self.is_legal_SW(action) == 1:
+                #move_in_int = square_to_int(action)
+                move_in_int = action
                 move_in_int = move_in_int - 9
+                while move_in_int > 0:
+                    if self.board[move_in_int] == player:
+                        break
+                    else:
+                        self.board[move_in_int] = player
+                    move_in_int = move_in_int - 9
 
-        if self.is_legal_NW(action) == 1:
-            #move_in_int = square_to_int(action)
-            move_in_int = action
-            move_in_int = move_in_int + 7
-            while move_in_int < 64:
-                if self.board[move_in_int] == player:
-                    break
-                else:
-                    self.board[move_in_int] = player
+            if self.is_legal_NW(action) == 1:
+                #move_in_int = square_to_int(action)
+                move_in_int = action
                 move_in_int = move_in_int + 7
+                while move_in_int < 64:
+                    if self.board[move_in_int] == player:
+                        break
+                    else:
+                        self.board[move_in_int] = player
+                    move_in_int = move_in_int + 7
 
-        if self.is_legal_SE(action) == 1:
-            #move_in_int = square_to_int(action)
-            move_in_int = action
-            move_in_int = move_in_int - 7
-            while move_in_int >= 0:
-                if self.board[move_in_int] == player:
-                    break
-                else:
-                    self.board[move_in_int] = player
+            if self.is_legal_SE(action) == 1:
+                #move_in_int = square_to_int(action)
+                move_in_int = action
                 move_in_int = move_in_int - 7
+                while move_in_int >= 0:
+                    if self.board[move_in_int] == player:
+                        break
+                    else:
+                        self.board[move_in_int] = player
+                    move_in_int = move_in_int - 7
 
         if self.board[71] == 1:
             self.board[71] = -1
