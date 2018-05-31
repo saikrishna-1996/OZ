@@ -63,7 +63,7 @@ class Champion(object):
             root_node = successor
             moves += 1
             game_over = root_node.env.is_game_over()
-        z = who_won(root_node.env.who_won())
+        z = root_node.env.who_won()
 
         # from white perspective
 
