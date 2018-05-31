@@ -156,6 +156,9 @@ class oz_env():
 
         return self
 
+    def copy(self):
+        return oz_env(self.board)
+
     @property
     def done(self):
         return self.winner is not None

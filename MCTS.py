@@ -64,8 +64,8 @@ class Node(object):
         move = self.legal_moves[child_id]
         self.taken_action = move
         if self.children[child_id] is None:
-            #next_env = self.env.copy()
-            next_env = (self.env)
+            next_env = self.env.copy()
+            #next_env = (self.env)
             next_env.step(move)
             self.children[child_id] = Node(next_env, self.explore_factor, parent=self, child_id=child_id)
 
