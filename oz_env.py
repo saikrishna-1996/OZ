@@ -377,19 +377,26 @@ class oz_env():
             return 0
 
     def legal_mask(self):
-        the_mask = [0]*64
+        the_mask = [0]*65
         #for i in range(8):
         #    for j in range(8):
         #        move = i*8 + j
         #        the_mask[i,j] = self.is_legal(move)
+        count = 0
         for i in range(64):
             the_mask[i] = self.is_legal(i)
+            if self.is_legal(i) == 0:
+                count = count + 1
+        if count == 64:
+            the_mask[64] = 1
+        else:
+            the_mask[64] = 0
         return the_mask
 
     def my_legal_moves(self):
         moves_list = []
         my_mask = self.legal_mask()
-        for i in range(64):
+        for i in range(65):
             #print("am here")
             if my_mask[i] == 1:
                 moves_list.append(i)

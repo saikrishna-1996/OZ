@@ -143,7 +143,10 @@ def MCTS(temp: float,
     pi = np.divide(np.power(N, temp), norm_factor)
     #print(pi)
     ## need to add here is pi is empty
-    action_index = np.argmax(pi)
+    if len(pi) == 0:
+        action_index = 64
+    else:
+        action_index = np.argmax(pi)
 
     new_pi = np.zeros(Config.d_out, )
     new_pi[root.legal_move_inds] = pi

@@ -64,7 +64,7 @@ class Config(object):
     BATCH_SIZE = default_workers
     D_ALPHA = 0.4
     EPS = 0.1
-    EXPLORE_FACTOR = 2
+    EXPLORE_FACTOR = 1.5
 
     # Game Generator
     TEMP_REDUCE_STEP = 20
@@ -85,5 +85,5 @@ class Config(object):
     d_in = 72
     h1 = 512  # neurons in first hidden layer
     h2 = 256  # neurons in second hidden layer
-    d_out = 64
+    d_out = 65
 
