@@ -196,7 +196,7 @@ class oz_env():
         anti_player = -player
         #move_in_int = square_to_int(move)
         move_in_int = move
-        if self.board(move_in_int) != 0:
+        if self.board[move_in_int] != 0:
             return 0
         else:
             if (move_in_int+1) % 8 == 0:
@@ -217,7 +217,7 @@ class oz_env():
         anti_player = -player
         #move_in_int = square_to_int(move)
         move_in_int = move
-        if self.board(move_in_int) != 0:
+        if self.board[move_in_int] != 0:
             return 0
         else:
             if (move_in_int % 8) == 0:
@@ -238,7 +238,7 @@ class oz_env():
         anti_player = -player
         #move_in_int = square_to_int(move)
         move_in_int = move
-        if self.board(move_in_int) != 0:
+        if self.board[move_in_int] != 0:
             return 0
         else:
             if move_in_int > 55:
@@ -259,7 +259,7 @@ class oz_env():
         anti_player = -player
         #move_in_int = square_to_int(move)
         move_in_int = move
-        if self.board(move_in_int) != 0:
+        if self.board[move_in_int] != 0:
             return 0
         else:
             if move_in_int <= 7:
@@ -280,7 +280,7 @@ class oz_env():
         anti_player = -player
         #move_in_int = square_to_int(move)
         move_in_int = move
-        if self.board(move_in_int) != 0:
+        if self.board[move_in_int] != 0:
             return 0
         else:
             if move_in_int > 45:
@@ -303,7 +303,7 @@ class oz_env():
         anti_player = -player
         #move_in_int = square_to_int(move)
         move_in_int = move
-        if self.board(move_in_int) != 0:
+        if self.board[move_in_int] != 0:
             return 0
         else:
             if move_in_int < 18:
@@ -326,7 +326,7 @@ class oz_env():
         anti_player = -player
         #move_in_int = square_to_int(move)
         move_in_int = move
-        if self.board(move_in_int) != 0:
+        if self.board[move_in_int] != 0:
             return 0
         else:
             if move_in_int >= 55:
@@ -348,7 +348,7 @@ class oz_env():
         anti_player = -player
         #move_in_int = square_to_int(move)
         move_in_int = move
-        if self.board(move_in_int) != 0:
+        if self.board[move_in_int] != 0:
             return 0
         else:
             if move_in_int < 15:
