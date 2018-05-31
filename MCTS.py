@@ -64,7 +64,8 @@ class Node(object):
         move = self.legal_moves[child_id]
         self.taken_action = move
         if self.children[child_id] is None:
-            next_env = self.env.copy()
+            #next_env = self.env.copy()
+            next_env = (self.env)
             next_env.step(move)
             self.children[child_id] = Node(next_env, self.explore_factor, parent=self, child_id=child_id)
 
@@ -153,7 +154,9 @@ def MCTS(temp: float,
 def select(root_node):
     curr_node = root_node
     moves = 0
-    game_over, z = curr_node.env.is_game_over(moves)
+    game_over = curr_node.env.is_game_over()
+    if game_over == 1:
+        z = curr_node.env.who_won()
 
     while curr_node.children:
         curr_node = curr_node.select_best_child()
@@ -164,7 +167,7 @@ def select(root_node):
 
 
 def expand_and_eval(node, network, game_over, z, moves):
-    if game_over:
+    if game_over :
         node.value = z
         return node
     node.expand(network)
