@@ -139,15 +139,16 @@ class oz_env():
 
 
     def reset(self):
-        self.board = [[0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0],
-                [0,0,0,-1,1,0,0,0],
-                [0,0,0,1,-1,0,0,0],
-                [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,-1]] #turn is encoded in the last element
+        #self.board = [[0,0,0,0,0,0,0,0],
+        #        [0,0,0,0,0,0,0,0],
+        #        [0,0,0,0,0,0,0,0],
+        #        [0,0,0,-1,1,0,0,0],
+        #        [0,0,0,1,-1,0,0,0],
+        #        [0,0,0,0,0,0,0,0],
+        #        [0,0,0,0,0,0,0,0],
+        #        [0,0,0,0,0,0,0,0],
+        #        [0,0,0,0,0,0,0,-1]] #turn is encoded in the last element
+        self.board = [0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0,  0,0,0,-1,1,0,0,0,  0,0,0,1,-1,0,0,0,  0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,-1]
         self.winner = None
         self.resigned = False
 
@@ -162,24 +163,26 @@ class oz_env():
         return self.board[71] == 1
 
     def is_game_over(self):
-        for i in range(8):
-            for j in range(8):
-                if self.board[i, j] == 0:
-                    return 0
+        #for i in range(8):
+        #    for j in range(8):
+        for i in range(64):
+            if self.board[i] == 0:
+                return 0
         return 1
 
     def who_won(self):
         white_count = 0
         black_count = 0
         no_count = 0
-        for i in range(8):
-            for j in range(8):
-                if self.board[i,j] == 1:
-                    white_count = white_count + 1
-                elif self.board[i,j] == -1:
-                    black_count = black_count + 1
-                else:
-                    no_count = no_count + 1
+        #for i in range(8):
+        #    for j in range(8):
+        for i in range(64):
+            if self.board[i] == 1:
+                white_count = white_count + 1
+            elif self.board[i] == -1:
+                black_count = black_count + 1
+            else:
+                no_count = no_count + 1
         if white_count > black_count:
             return 1
         elif white_count == black_count:
@@ -363,24 +366,28 @@ class oz_env():
                     return 0
 
     def is_legal(self, move):
-        if self.is_legal_SE(self,move) == 1 or self.is_legal_NW(self, move) == 1 or self.is_legal_SW(self, move) == 1 or self.is_legal_NE(self, move) == 1 or self.is_legal_S(self, move) == 1 or self.is_legal_N(self, move) == 1 or self.is_legal_W(self, move) == 1 or self.is_legal_E(self, move) == 1:
+        if self.is_legal_SE(move) == 1 or self.is_legal_NW(move) == 1 or self.is_legal_SW(move) == 1 or self.is_legal_NE(move) == 1 or self.is_legal_S(move) == 1 or self.is_legal_N(move) == 1 or self.is_legal_W(move) == 1 or self.is_legal_E(move) == 1:
             return 1
         else:
             return 0
 
     def legal_mask(self):
         the_mask = [0]*64
-        for i in range(8):
-            for j in range(8):
-                move = i*8 + j
-                the_mask[i,j] = self.is_legal(self, move)
-
-    def legal_moves(self):
-        moves_list = []
-        my_mask = self.legal_mask(self)
+        #for i in range(8):
+        #    for j in range(8):
+        #        move = i*8 + j
+        #        the_mask[i,j] = self.is_legal(move)
         for i in range(64):
+            the_mask[i] = self.is_legal(i)
+
+    def my_legal_moves(self):
+        moves_list = []
+        my_mask = self.legal_mask()
+        for i in range(64):
+            print("am here")
             if my_mask[i] == 1:
                 moves_list.append(i)
+                print(i)
         return moves_list
 
     def step(self, action):
