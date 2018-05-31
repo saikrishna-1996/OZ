@@ -375,6 +375,14 @@ class oz_env():
                 move = i*8 + j
                 the_mask[i,j] = self.is_legal(self, move)
 
+    def legal_moves(self):
+        moves_list = []
+        my_mask = self.legal_mask(self)
+        for i in range(64):
+            if my_mask[i] == 1:
+                moves_list.append(i)
+        return moves_list
+
     def step(self, action):
 
         player = self.board[71]
