@@ -24,14 +24,16 @@ class Node(object):
 
         self.explore_factor = explore_factor
 
-        legal_moves = env.board.legal_moves
+        legal_moves = env.my_legal_moves()
+        print(legal_moves[0])
         self.legal_move_inds = []
         self.legal_moves = []
 
         for move in legal_moves:
-            legal_move_uci = move.uci()
-            ind = Config.MOVETOINDEX[legal_move_uci]
-            self.legal_moves.append(legal_move_uci)
+            #legal_move_uci = move.uci()
+            #ind = Config.MOVETOINDEX[legal_move_uci]
+            ind = move
+            self.legal_moves.append(move)
             self.legal_move_inds.append(ind)
         self.P = init_P[self.legal_move_inds]
         self.N = init_N[self.legal_move_inds]
@@ -70,7 +72,7 @@ class Node(object):
 
     def expand(self, network):
         self.children = [None] * len(self.legal_moves)
-        all_move_probs, v = network.forward(torch.from_numpy(board_to_feature(self.env.board)).unsqueeze(0))
+        all_move_probs, v = network.forward(torch.from_numpy(np.asarray(self.env.board)).unsqueeze(0))
         all_move_probs = all_move_probs.squeeze().data.numpy()
         child_probs = (all_move_probs[self.legal_move_inds] + 1e-12) / np.sum(all_move_probs[self.legal_move_inds] + 1e-12)
         child_probs = np.exp(child_probs)

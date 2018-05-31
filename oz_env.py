@@ -379,6 +379,7 @@ class oz_env():
         #        the_mask[i,j] = self.is_legal(move)
         for i in range(64):
             the_mask[i] = self.is_legal(i)
+        return the_mask
 
     def my_legal_moves(self):
         moves_list = []

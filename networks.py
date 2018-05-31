@@ -19,7 +19,7 @@ class Polvalnet_fc(nn.Module):
 		self.linear3v = nn.Linear(h2, 1)
 
 	def forward(self, x):
-		x = Variable(x)
+		x = Variable(x.float())
 		h1_relu = F.relu(self.linear1(x))
 		h2_relu = F.relu(self.linear2(h1_relu))
 		p_out = F.sigmoid(self.linear3p(h2_relu))
