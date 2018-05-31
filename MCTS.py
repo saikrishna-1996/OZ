@@ -25,7 +25,7 @@ class Node(object):
         self.explore_factor = explore_factor
 
         legal_moves = env.my_legal_moves()
-        print(legal_moves[0])
+        #print(legal_moves[0])
         self.legal_move_inds = []
         self.legal_moves = []
 
@@ -161,7 +161,11 @@ def select(root_node):
     while curr_node.children:
         curr_node = curr_node.select_best_child()
         moves += 1
-    game_over, z = curr_node.env.is_game_over(moves)
+    game_over = curr_node.env.is_game_over()
+    if game_over == 1:
+        z = curr_node.env.who_won()
+    else:
+        z = 0
 
     return curr_node, moves, game_over, z
 

@@ -385,10 +385,10 @@ class oz_env():
         moves_list = []
         my_mask = self.legal_mask()
         for i in range(64):
-            print("am here")
+            #print("am here")
             if my_mask[i] == 1:
                 moves_list.append(i)
-                print(i)
+                #print(i)
         return moves_list
 
     def step(self, action):
