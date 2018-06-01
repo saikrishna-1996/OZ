@@ -1,4 +1,5 @@
 #import numpy as np
+import sys
 
 def square_to_int(square):
     if square == 'A8':
@@ -214,7 +215,7 @@ class oz_env():
                     return 0
                 else:
                     move_in_int = move_in_int + 1
-                    while (move_in_int+1)%8 != 0:
+                    while (move_in_int+1)%8 != 0 and self.board[move_in_int] != 0:
                         move_in_int = move_in_int + 1
                         if self.board[move_in_int] == player:
                             return 1
@@ -235,7 +236,7 @@ class oz_env():
                     return 0
                 else:
                     move_in_int = move_in_int - 1
-                    while (move_in_int % 8) != 0:
+                    while (move_in_int % 8) != 0 and self.board[move_in_int] != 0:
                         move_in_int = move_in_int - 1
                         if self.board[move_in_int] == player:
                             return 1
@@ -256,7 +257,7 @@ class oz_env():
                 if self.board[move_in_int] != anti_player:
                     return 0
                 else:
-                    while move_in_int < 56:
+                    while move_in_int < 56 and self.board[move_in_int] != 0:
                         move_in_int = move_in_int + 8
                         if self.board[move_in_int] == player:
                             return 1
@@ -277,7 +278,7 @@ class oz_env():
                 if self.board[move_in_int] != anti_player:
                     return 0
                 else:
-                    while move_in_int > 7:
+                    while move_in_int > 7 and self.board[move_in_int] != 0:
                         move_in_int = move_in_int - 8
                         if self.board[move_in_int] == player:
                             return 1
@@ -299,7 +300,7 @@ class oz_env():
                     return 0
                 else:
                     move_in_int = move_in_int + 9
-                    while move_in_int < 64:
+                    while move_in_int < 64 and self.board[move_in_int] != 0:
                         if self.board[move_in_int] == player:
                             return 1
                         move_in_int = move_in_int + 9
@@ -322,7 +323,7 @@ class oz_env():
                     return 0
                 else:
                     move_in_int = move_in_int - 9
-                    while move_in_int > 0:
+                    while move_in_int > 0 and self.board[move_in_int] != 0:
                         if self.board[move_in_int] == player:
                             return 1
                         move_in_int = move_in_int - 9
@@ -345,7 +346,7 @@ class oz_env():
                     return 0
                 else:
                     move_in_int = move_in_int + 7
-                    while move_in_int < 64:
+                    while move_in_int < 64 and self.board[move_in_int] != 0:
                         if self.board[move_in_int] == player:
                             return 1
                         move_in_int = move_in_int + 7
@@ -367,7 +368,7 @@ class oz_env():
                     return 0
                 else:
                     move_in_int = move_in_int - 7
-                    while move_in_int >= 0:
+                    while move_in_int >= 0 and self.board[move_in_int] != 0:
                         if self.board[move_in_int] == player:
                             return 1
                         move_in_int = move_in_int - 7
@@ -375,6 +376,17 @@ class oz_env():
 
     def is_legal(self, move):
         if self.is_legal_SE(move) == 1 or self.is_legal_NW(move) == 1 or self.is_legal_SW(move) == 1 or self.is_legal_NE(move) == 1 or self.is_legal_S(move) == 1 or self.is_legal_N(move) == 1 or self.is_legal_W(move) == 1 or self.is_legal_E(move) == 1:
+            print("move is")
+            print(move)
+            print("leaglities are")
+            sys.stdout.write(str(self.is_legal_E(move)))
+            sys.stdout.write(str(self.is_legal_W(move)))
+            sys.stdout.write(str(self.is_legal_N(move)))
+            sys.stdout.write(str(self.is_legal_S(move)))
+            sys.stdout.write(str(self.is_legal_NE(move)))
+            sys.stdout.write(str(self.is_legal_SE(move)))
+            sys.stdout.write(str(self.is_legal_SW(move)))
+            sys.stdout.write(str(self.is_legal_NW(move)))
             return 1
         else:
             return 0
@@ -407,6 +419,20 @@ class oz_env():
         return moves_list
 
     def step(self, action):
+
+        a = [[0 for x in range(8)] for y in range(9)]
+        for i in range(9):
+            for j in range(8):
+                ind = i*8 + j
+                a[i][j] = self.board[ind]
+
+        print("start printing in environment\n")
+
+        print("action received is")
+        print(action)
+
+        print("current board is")
+        print(a)
 
         player = self.board[71]
 
@@ -509,3 +535,12 @@ class oz_env():
             #self.board[square_to_int(action)] = -1
             self.board[action] = -1
 
+        a = [[0 for x in range(8)] for y in range(9)]
+        for i in range(9):
+            for j in range(8):
+                a[i][j] = self.board[i*8 + j]
+
+
+        print("board after making move is")
+        print(a)
+        print("end printing in environment\n")
