@@ -1,7 +1,7 @@
 # Goal is to check if our current policy is any better than random policy
 import argparse
-import glob
-import os
+#import glob
+#import os
 import time
 
 import numpy as np
@@ -16,7 +16,7 @@ from train import load_model
 parser = argparse.ArgumentParser(description='Launcher for policy tester')
 parser.add_argument('--newnetwork', type=str, default=None, help='Path to the most recently trained model')
 parser.add_argument('--oldnetwork', type=str, default=None, help='Path to an older trained model')
-parser.add_argument('--numgames', type=int, default=100, help='how many games should they play against eachother?')
+parser.add_argument('--numgames', type=int, default=1, help='how many games should they play against eachother?')
 parser.add_argument('--no-cuda', action='store_true', default=True, help='disables GPU use')
 
 args = parser.parse_args()

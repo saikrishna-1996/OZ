@@ -8,12 +8,12 @@ import torch
 # There will need to be some function that calls both of these functions and uses the output from load_gamefile to train a network
 # load_gamefile will return a list of lists containing [state, policy, value] as created in MCTS.
 from config import Config
-# from logger import Logger
+from logger import Logger
 from networks import Polvalnet_fc
 
 
 # Set the logger
-# logger = Logger('./logs')
+logger = Logger('./logs')
 
 
 def load_gamefile(net_number):  # I'm not married to this, I think it could be done better.
@@ -30,6 +30,7 @@ def load_gamefile(net_number):  # I'm not married to this, I think it could be d
         print('Could not load gamefile!')
 
 
+
 def train_model(model, games=None, net_number=0, min_num_games=400):
     if games is None:
         game_data = load_gamefile(net_number)
@@ -37,9 +38,9 @@ def train_model(model, games=None, net_number=0, min_num_games=400):
         game_data = games
 
     print("entered train_model\n")
-    total_train_iter = 0
+    curr_train_iter = 0
     if game_data is not None:
-        curr_train_iter = 0
+        #curr_train_iter = 0
         for game in game_data:
             num_batches = int(len(game) / Config.minibatch_size + 1)
             game = np.array(game)
@@ -57,8 +58,8 @@ def train_model(model, games=None, net_number=0, min_num_games=400):
 
                     policy = np.vstack(data[:, 1]).astype(float)
                     features = torch.from_numpy(features.astype(float))
-                    do_backprop(features, policy, data[:, 2], model, total_train_iter, curr_train_iter)
-                    total_train_iter = total_train_iter + 1
+                    do_backprop(features, policy, data[:, 2], model, curr_train_iter)
+                    #total_train_iter = total_train_iter + 1
                     curr_train_iter = curr_train_iter + 1
     return model
 
@@ -67,8 +68,8 @@ def cross_entropy(pred, soft_targets):
     return torch.mean(torch.sum(- soft_targets.double() * pred.double(), 1))
 
 
-def do_backprop(features, policy, act_val, model, total_train_iter, curr_train_iter):
-    print("entered do_backprop\n")
+def do_backprop(features, policy, act_val, model, curr_train_iter):
+    #print("entered do_backprop\n")
     criterion1 = torch.nn.MSELoss(size_average=False)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 
@@ -94,15 +95,20 @@ def do_backprop(features, policy, act_val, model, total_train_iter, curr_train_i
     loss = loss1.float() - loss2.float() + loss3.float()
 
     # Logging all the loss values
-    #info = {
-    #    'loss1': loss1.data[0],
-    #    'loss2': loss2.data[0],
-    #    'loss3': loss3.data[0]
-    #}
+    info = {
+        'loss1': loss1.data[0],
+        'loss2': loss2.data[0],
+        'loss3': loss3.data[0]
+    }
+
+    for tag, value in info.items():
+        logger.scalar_summary(tag, value, curr_train_iter + 1)
 
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
+
+
 
 
 def load_trained(model, fname):
@@ -114,7 +120,7 @@ def load_trained(model, fname):
 
 
 def save_trained(model, iteration):
-    print("entered save_trained\n")
+    #print("entered save_trained\n")
     torch.save(model.state_dict(), "./{}.pt".format(iteration))
 
 

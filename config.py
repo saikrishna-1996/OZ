@@ -60,7 +60,7 @@ class Config(object):
 
     #MOVETOINDEX, INDEXTOMOVE = make_move_maps()
 
-    NUM_SIMULATIONS = 10
+    NUM_SIMULATIONS = 400
     BATCH_SIZE = default_workers
     D_ALPHA = 0.4
     EPS = 0.1
