@@ -3,7 +3,7 @@ import numpy as np
 import torch
 
 from config import Config
-from oz_env import oz_env
+from oz_env import oz_env, deepcopy
 from networks import Polvalnet_fc
 
 
@@ -24,12 +24,12 @@ class Node(object):
 
         self.explore_factor = explore_factor
 
-        legal_moves = env.my_legal_moves()
+        only_legal_moves = env.my_legal_moves()
         #print(legal_moves[0])
         self.legal_move_inds = []
         self.legal_moves = []
 
-        for move in legal_moves:
+        for move in only_legal_moves:
             #legal_move_uci = move.uci()
             #ind = Config.MOVETOINDEX[legal_move_uci]
             ind = move
@@ -64,7 +64,8 @@ class Node(object):
         move = self.legal_moves[child_id]
         self.taken_action = move
         if self.children[child_id] is None:
-            next_env = self.env.copy()
+            #next_env = self.env.deepcopy()
+            next_env = deepcopy(self.env)
             #next_env = (self.env)
             next_env.step(move)
             self.children[child_id] = Node(next_env, self.explore_factor, parent=self, child_id=child_id)
@@ -76,7 +77,7 @@ class Node(object):
         all_move_probs, v = network.forward(torch.from_numpy(np.asarray(self.env.board)).unsqueeze(0))
         all_move_probs = all_move_probs.squeeze().data.numpy()
         child_probs = (all_move_probs[self.legal_move_inds] + 1e-12) / np.sum(all_move_probs[self.legal_move_inds] + 1e-12)
-        child_probs = np.exp(child_probs)
+        #child_probs = np.exp(child_probs)
         self.P = child_probs
         self.value = v
 
@@ -93,23 +94,23 @@ class Node(object):
         self.P = self.P / self.P.sum(keepdims=1)
 
 
-def legal_mask(board, all_move_probs) -> np.array:
-    legal_moves = board.legal_moves
-    mask = np.zeros_like(all_move_probs)
-    total_p = 0
-    inds = []
-    for legal_move in legal_moves:
-        legal_move_uci = legal_move.uci()
-        ind = Config.MOVETOINDEX[legal_move_uci]
-        mask[ind] = 1
-        inds.append(ind)
-        total_p += all_move_probs[ind]
+#def legal_mask(board, all_move_probs) -> np.array:
+#    legal_moves = board.legal_moves
+#    mask = np.zeros_like(all_move_probs)
+#    total_p = 0
+#    inds = []
+#    for legal_move in legal_moves:
+#        legal_move_uci = legal_move.uci()
+#        ind = Config.MOVETOINDEX[legal_move_uci]
+#        mask[ind] = 1
+#        inds.append(ind)
+#        total_p += all_move_probs[ind]
 
-    legal_moves_prob = np.multiply(mask, all_move_probs)
+#    legal_moves_prob = np.multiply(mask, all_move_probs)
 
-    legal_moves_prob = np.divide(legal_moves_prob, total_p)
+#    legal_moves_prob = np.divide(legal_moves_prob, total_p)
 
-    return legal_moves_prob
+#    return legal_moves_prob
 
 
 def MCTS(temp: float,
@@ -127,14 +128,31 @@ def MCTS(temp: float,
     avg_select_time = 0.
     for simulation in range(Config.NUM_SIMULATIONS):
         start_time = time.time()
+        #print("before calling select")
+        #print(root.env.board)
         curr_node, moves, game_over, z = select(root)
+        #print("printing root stats")
+        #print(root.N)
+        #print(root.P)
+        #print(root.W)
+        #print(root.children)
         avg_select_time += (time.time() - start_time) / Config.NUM_SIMULATIONS
-        # print('Simulation: {} Root node sum: {}'.format(simulation, np.sum(root.N)))
+        #print('Simulation: {} Root node sum: {}'.format(simulation, np.sum(root.N)))
         start_time = time.time()
+        #print("before calling expand_and_eval")
+        #print(root.env.board)
         leaf = expand_and_eval(curr_node, network, game_over, z, moves)
+        #print("printing leaf stats")
+        #print(leaf.N)
+        #print(leaf.P)
+        #print(leaf.W)
         avg_expand_time += (time.time() - start_time) / Config.NUM_SIMULATIONS
         start_time = time.time()
+        #print("before calling backup")
+        #print(root.env.board)
         backup(leaf, root)
+        #print("after calling backup")
+        #print(root.env.board)
         avg_backup_time += (time.time() - start_time) / Config.NUM_SIMULATIONS
     N = root.N
     norm_factor = np.sum(np.power(N, temp))
@@ -150,13 +168,15 @@ def MCTS(temp: float,
 
     new_pi = np.zeros(Config.d_out, )
     new_pi[root.legal_move_inds] = pi
-    #print('Average Select time: {}'.format(avg_select_time))
-    #print('Average Expand time: {}'.format(avg_expand_time))
-    #print('Average Backup time: {}'.format(avg_backup_time))
-    #print('MCTS finished {} simulations in {} seconds'.format(Config.NUM_SIMULATIONS, (time.time() - mcts_start)))
+    print('Average Select time: {}'.format(avg_select_time))
+    print('Average Expand time: {}'.format(avg_expand_time))
+    print('Average Backup time: {}'.format(avg_backup_time))
+    print('MCTS finished {} simulations in {} seconds'.format(Config.NUM_SIMULATIONS, (time.time() - mcts_start)))
     return new_pi, root.children[action_index], root
 
 def select(root_node):
+    print("at the beginning of select function")
+    print(root_node.env.board)
     curr_node = root_node
     moves = 0
     game_over = curr_node.env.is_game_over()
@@ -164,13 +184,21 @@ def select(root_node):
         z = curr_node.env.who_won()
 
     while curr_node.children:
+        #print("am here\n")
         curr_node = curr_node.select_best_child()
         moves += 1
     game_over = curr_node.env.is_game_over()
+    #print("the real test.. \n")
+    #print(curr_node.children)
+    #print("root node's children are")
+    #print(root_node.children)
     if game_over == 1:
         z = curr_node.env.who_won()
     else:
         z = 0
+
+    print("at the end of select function")
+    print(root_node.env.board)
 
     return curr_node, moves, game_over, z
 

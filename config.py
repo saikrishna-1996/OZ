@@ -60,11 +60,11 @@ class Config(object):
 
     #MOVETOINDEX, INDEXTOMOVE = make_move_maps()
 
-    NUM_SIMULATIONS = 400
+    NUM_SIMULATIONS = 80
     BATCH_SIZE = default_workers
     D_ALPHA = 0.4
     EPS = 0.1
-    EXPLORE_FACTOR = 1.5
+    EXPLORE_FACTOR = 1.1
 
     # Game Generator
     TEMP_REDUCE_STEP = 20

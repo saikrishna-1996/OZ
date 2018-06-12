@@ -1,5 +1,6 @@
 #import numpy as np
 import sys
+from copy import copy, deepcopy
 
 def square_to_int(square):
     if square == 'A8':
@@ -133,10 +134,10 @@ def square_to_int(square):
 
 class oz_env():
 
-    def __init__(self, board=None):
+    def __init__(self, board=None, winner=None, result=None):
         self.board = board
-        self.winner = None
-        self.result = None
+        self.winner = winner
+        self.result = result
         #self.num_pass = 0
 
 
@@ -157,8 +158,22 @@ class oz_env():
 
         return self
 
-    def copy(self):
-        return oz_env(self.board)
+    #def copy(self):
+    #    return oz_env(self.board)
+
+    def __copy__(self):
+        return type(self)(self.board, self.winner, self.result)
+
+    def __deepcopy__(self, memo):
+        id_self = id(self)
+        _copy = memo.get(id_self)
+        if _copy is None:
+            _copy = type(self)(
+                    deepcopy(self.board, memo),
+                    deepcopy(self.winner, memo),
+                    deepcopy(self.result, memo))
+            memo[id_self] = _copy
+        return _copy
 
     @property
     def done(self):
@@ -376,17 +391,17 @@ class oz_env():
 
     def is_legal(self, move):
         if self.is_legal_SE(move) == 1 or self.is_legal_NW(move) == 1 or self.is_legal_SW(move) == 1 or self.is_legal_NE(move) == 1 or self.is_legal_S(move) == 1 or self.is_legal_N(move) == 1 or self.is_legal_W(move) == 1 or self.is_legal_E(move) == 1:
-            print("move is")
-            print(move)
-            print("leaglities are")
-            sys.stdout.write(str(self.is_legal_E(move)))
-            sys.stdout.write(str(self.is_legal_W(move)))
-            sys.stdout.write(str(self.is_legal_N(move)))
-            sys.stdout.write(str(self.is_legal_S(move)))
-            sys.stdout.write(str(self.is_legal_NE(move)))
-            sys.stdout.write(str(self.is_legal_SE(move)))
-            sys.stdout.write(str(self.is_legal_SW(move)))
-            sys.stdout.write(str(self.is_legal_NW(move)))
+            #print("move is")
+            #print(move)
+            #print("leaglities are")
+            #sys.stdout.write(str(self.is_legal_E(move)))
+            #sys.stdout.write(str(self.is_legal_W(move)))
+            #sys.stdout.write(str(self.is_legal_N(move)))
+            #sys.stdout.write(str(self.is_legal_S(move)))
+            #sys.stdout.write(str(self.is_legal_NE(move)))
+            #sys.stdout.write(str(self.is_legal_SE(move)))
+            #sys.stdout.write(str(self.is_legal_SW(move)))
+            #sys.stdout.write(str(self.is_legal_NW(move)))
             return 1
         else:
             return 0
@@ -426,13 +441,13 @@ class oz_env():
                 ind = i*8 + j
                 a[i][j] = self.board[ind]
 
-        print("start printing in environment\n")
+        #print("start printing in environment\n")
 
-        print("action received is")
-        print(action)
+        #print("action received is")
+        #print(action)
 
-        print("current board is")
-        print(a)
+        #print("current board is")
+        #print(a)
 
         player = self.board[71]
 
@@ -541,6 +556,6 @@ class oz_env():
                 a[i][j] = self.board[i*8 + j]
 
 
-        print("board after making move is")
-        print(a)
-        print("end printing in environment\n")
+        #print("board after making move is")
+        #print(a)
+        #print("end printing in environment\n")
